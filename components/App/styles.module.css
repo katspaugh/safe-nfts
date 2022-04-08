@@ -4,6 +4,15 @@
   margin: 0 auto;
 }
 
+.container h1 {
+  margin-bottom: 0.2em;
+}
+
+.container h2 {
+  margin-top: 0;
+  color: #777;
+}
+
 .container > div {
   margin: 2em 0;
 }
@@ -12,7 +21,17 @@
   width: 100%;
   font-size: 1em;
   padding: 0.2em 0.4em;
-  margin-top: 0.2em;
+  margin: 0.2em 0;
+}
+
+.container label + div {
+  font-size: 0.8em;
+  color: #777;
+}
+
+.container label + div a {
+  border-bottom: 1px dashed #555;
+  color: #777;
 }
 
 .preview {

@@ -9,12 +9,17 @@ import { buyOrder, getItem, getOrder, initSeaport } from '../../utils/opensea'
 import useAsync from '../../utils/useAsync'
 import css from './styles.module.css'
 
+const rinkebyChainId = 4
+const exampleCollection = '0x71e24f80f2f7cbcd07009ad91ccc469d53bb10e0'
+const exampleId = '4'
+
 const App = () => {
   const { sdk, safe } = useSafeAppsSDK()
 
   const [tokenAddress, setTokenAddress] = useState<string>()
   const [tokenId, setTokenId] = useState<string>()
   const [buyError, setBuyError] = useState<Error>()
+  const [defaultLink, setDefaultLink] = useState<string>('')
 
   const getAsset = useCallback(() => {
     if (!(tokenAddress && tokenId)) return Promise.resolve()
@@ -36,41 +41,57 @@ const App = () => {
 
     setBuyError(undefined)
 
-    buyOrder(orderInfo, safe.safeAddress).then(hash => {
-      console.log(hash)
-    }).catch((err) => {
-      setBuyError(err)
-    })
+    buyOrder(orderInfo, safe.safeAddress)
+      .then((hash) => {
+        console.log('Transaction hash', hash)
+      })
+      .catch((err) => {
+        setBuyError(err)
+      })
+  }
+
+  const onAddressChange = (address: string, id: string) => {
+    setTokenAddress(address)
+    setTokenId(id)
+    setBuyError(undefined)
   }
 
   const onLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
-    const [ , collection, id ] = val.match(/:\/\/(?:testnets.)?opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i)
+    const [ , collection, id ] = val.match(/:\/\/(?:testnets.)?opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i) || []
+    onAddressChange(collection || '', id || '')
+  }
 
-    if (collection && id) {
-      setTokenAddress(collection)
-      setTokenId(id)
-    }
-
-    setBuyError(undefined)
+  const onExampleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setDefaultLink(e.currentTarget.href)
+    onAddressChange(exampleCollection, exampleId)
   }
 
   useEffect(() => {
     const prov: any = new SafeAppProvider(safe, sdk as any)
     const web3: Web3 = new Web3(prov)
-    const isTestNet = safe.chainId == 4
+    const isTestNet = safe.chainId == rinkebyChainId
     initSeaport(web3.currentProvider as Provider, isTestNet)
   }, [sdk, safe])
 
   return (
     <div className={css.container}>
       <h1>Safe NFTs</h1>
+      <h2>Buy NFTs from the comfort of your Safe</h2>
 
       <div>
         <label>
           NFT link on OpenSea<br />
-          <input onChange={onLinkChange} placeholder="E.g. https://opensea.io/assets/0x71e24f80f2f7cbcd07009ad91ccc469d53bb10e0/4" />
+          <input onChange={onLinkChange} defaultValue={defaultLink} key={defaultLink} />
         </label>
+
+        <div>
+          E.g.{' '}
+          <a href={`https://opensea.io/assets/${exampleCollection}/${exampleId}`} onClick={onExampleClick}>
+            {`https://opensea.io/assets/${exampleCollection}/${exampleId}`}
+          </a>
+        </div>
       </div>
 
       {loading && 'Loading NFT...'}
