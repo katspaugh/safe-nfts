@@ -1,6 +1,6 @@
 .container {
   padding: 30px;
-  max-width: 900px;
+  width: 800px;
   margin: 0 auto;
 }
 
@@ -12,10 +12,12 @@
   width: 100%;
   font-size: 1em;
   padding: 0.2em 0.4em;
+  margin-top: 0.2em;
 }
 
 .preview {
   display: flex;
+  align-items: stretch;
 }
 
 .preview > div {
@@ -26,12 +28,35 @@
   display: block;
 }
 
+.preview div:last-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .preview button {
   font-size: 2em;
-  margin: 0.2em;
   padding: 0.1em 1em;
+  align-self: flex-end;
 }
 
 .preview a {
   text-decoration: underline;
+}
+
+.price {
+  font-size: 1.5em;
+  margin: 0.5em 0;
+}
+
+.error {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+  background-color: #ffdddd;
+  border: 1px solid #ff0000;
+  padding: 1.5em;
+  border-radius: 10px;
 }

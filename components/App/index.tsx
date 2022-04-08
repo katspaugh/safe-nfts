@@ -29,6 +29,7 @@ const App = () => {
 
   const [tokenAddress, setTokenAddress] = useState<string>()
   const [tokenId, setTokenId] = useState<string>()
+  const [buyError, setBuyError] = useState<Error>()
 
   const getAsset = useCallback(() => {
     if (!(tokenAddress && tokenId)) return Promise.resolve()
@@ -41,16 +42,19 @@ const App = () => {
 
   const { result, error, loading } = useAsync<[ OpenSeaAsset, Order | void ] | void>(getAsset)
   const [ tokenInfo, orderInfo ] = result || []
+  const anyError = buyError || error
 
   const onBuy = (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     if (!orderInfo) return
 
+    setBuyError(undefined)
+
     buyOrder(orderInfo, safe.safeAddress).then(hash => {
       console.log(hash)
     }).catch((err) => {
-      console.error(err)
+      setBuyError(err)
     })
   }
 
@@ -62,6 +66,8 @@ const App = () => {
       setTokenAddress(collection)
       setTokenId(id)
     }
+
+    setBuyError(undefined)
   }
 
   useEffect(() => {
@@ -73,7 +79,6 @@ const App = () => {
   return (
     <div className={css.container}>
       <h1>Safe NFTs</h1>
-      <h2>{safe.safeAddress}</h2>
 
       <div>
         <label>
@@ -84,7 +89,11 @@ const App = () => {
 
       {loading && 'Loading NFT...'}
 
-      {error && `Error loading NFT: ${error.message}`}
+      {anyError && (
+        <div className={css.error}>
+          Error loading NFT: {anyError.message}
+        </div>
+      )}
 
       {tokenInfo && (
         <div className={css.preview}>
@@ -95,13 +104,15 @@ const App = () => {
           <div>
             {tokenInfo.collection.name}<br />
             {tokenInfo.name}<br />
-            {orderInfo ? Web3.utils.fromWei(orderInfo.currentPrice.toString(), 'ether') + ' ETH' : 'Not for sale'}<br />
+            <div className={css.price}>
+              {orderInfo ? Web3.utils.fromWei(orderInfo.currentPrice.toString(), 'ether') + ' ETH' : 'Not for sale'}
+            </div>
             <a href={tokenInfo.openseaLink}>View on OpenSea</a>
+          </div>
 
+          <div>
             {orderInfo && orderInfo.currentPrice && (
-              <div>
-                <button onClick={onBuy}>Buy</button>
-              </div>
+              <button onClick={onBuy}>Buy</button>
             )}
           </div>
         </div>
