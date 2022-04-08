@@ -1,5 +1,6 @@
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider';
+import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider'
+import { provider as Provider } from 'web3-core'
 
 import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
 import { useCallback, useEffect, useState } from 'react'
@@ -7,22 +8,6 @@ import Web3 from 'web3'
 import { buyOrder, getItem, getOrder, initSeaport } from '../../utils/opensea'
 import useAsync from '../../utils/useAsync'
 import css from './styles.module.css'
-
-const Buy = ({ order, recepient }: { order: Order, recepient: string }) => {
-  const buyAsset = useCallback(() => {
-    return buyOrder(order, recepient)
-  }, [order, recepient])
-
-  const { result, error, loading } = useAsync<string>(buyAsset)
-
-  console.log(result)
-
-  return (
-    <div>
-      {loading ? 'Buying...' : error ? error.message : result}
-    </div>
-  )
-}
 
 const App = () => {
   const { sdk, safe } = useSafeAppsSDK()
@@ -60,7 +45,7 @@ const App = () => {
 
   const onLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
-    const [ , collection, id ] = val.match(/:\/\/opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i)
+    const [ , collection, id ] = val.match(/:\/\/(?:testnets.)?opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i)
 
     if (collection && id) {
       setTokenAddress(collection)
@@ -71,9 +56,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    const prov: any = new SafeAppProvider(safe, sdk)
-    const web3: any = new Web3(prov)
-    initSeaport(web3.currentProvider)
+    const prov: any = new SafeAppProvider(safe, sdk as any)
+    const web3: Web3 = new Web3(prov)
+    const isTestNet = safe.chainId == 4
+    initSeaport(web3.currentProvider as Provider, isTestNet)
   }, [sdk, safe])
 
   return (
@@ -83,7 +69,7 @@ const App = () => {
       <div>
         <label>
           NFT link on OpenSea<br />
-          <input onChange={onLinkChange} />
+          <input onChange={onLinkChange} placeholder="E.g. https://opensea.io/assets/0x71e24f80f2f7cbcd07009ad91ccc469d53bb10e0/4" />
         </label>
       </div>
 

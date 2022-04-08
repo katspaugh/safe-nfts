@@ -5,12 +5,12 @@ import { provider as Provider } from 'web3-core'
 // This example provider won't let you make transactions, only read-only calls:
 let seaport = null
 
-export const initSeaport = (provider: Provider) => {
+export const initSeaport = (provider: Provider, isTestNet = false) => {
   if (seaport) return seaport
 
   seaport = new OpenSeaPort(provider, {
-    networkName: Network.Main,
-    apiKey: process.env.OPENSEA_KEY || '54f28eb29db648719c2eaaabccc414fc'
+    networkName: isTestNet ? Network.Rinkeby : Network.Main,
+    apiKey: isTestNet ? undefined : process.env.OPENSEA_KEY || '54f28eb29db648719c2eaaabccc414fc'
   })
 
   return seaport
