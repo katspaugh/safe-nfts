@@ -1,0 +1,17 @@
+{
+  "short_name": "safe-nfts",
+  "name": "Safe NFTs",
+  "description": "Buy NFTs from the comfort of your Safe",
+  "iconPath": "logo.svg",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

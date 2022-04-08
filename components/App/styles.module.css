@@ -1,0 +1,37 @@
+.container {
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.container > div {
+  margin: 2em 0;
+}
+
+.container input {
+  width: 100%;
+  font-size: 1em;
+  padding: 0.2em 0.4em;
+}
+
+.preview {
+  display: flex;
+}
+
+.preview > div {
+  margin: 10px;
+}
+
+.preview img {
+  display: block;
+}
+
+.preview button {
+  font-size: 2em;
+  margin: 0.2em;
+  padding: 0.1em 1em;
+}
+
+.preview a {
+  text-decoration: underline;
+}
