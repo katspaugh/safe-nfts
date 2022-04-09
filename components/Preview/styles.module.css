@@ -1,0 +1,42 @@
+.preview {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #ddd;
+}
+
+.preview > div {
+  border: 1px solid #ddd;
+}
+
+.preview > div:last-child {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.preview img {
+  display: block;
+}
+
+.preview button {
+  font-size: 1.5em;
+  width: 8em;
+  padding: 0.2em 0;
+  cursor: pointer;
+}
+
+.preview a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.price {
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+
+.description span {
+  color: #777;
+}

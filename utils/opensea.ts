@@ -2,11 +2,13 @@ import { OpenSeaPort, Network } from 'opensea-js'
 import { OpenSeaAsset, Order, OrderSide } from 'opensea-js/lib/types'
 import { provider as Provider } from 'web3-core'
 
-// This example provider won't let you make transactions, only read-only calls:
 let seaport = null
+let provider = null
 
-export const initSeaport = (provider: Provider, isTestNet = false) => {
+export const initSeaport = (web3Provider: Provider, isTestNet = false) => {
   if (seaport) return seaport
+
+  provider = web3Provider
 
   seaport = new OpenSeaPort(provider, {
     networkName: isTestNet ? Network.Rinkeby : Network.Main,
@@ -33,7 +35,7 @@ export const getOrder = async (tokenAddress: string, tokenId: string | number): 
   return order
 }
 
-export const buyOrder = async (order: Order, accountAddress: string): Promise<string> => {
+export const buyOrder = async (order: Order, accountAddress = provider.safe.safeAddress): Promise<string> => {
   const transactionHash = await seaport.fulfillOrder({ order, accountAddress })
   return transactionHash
 }

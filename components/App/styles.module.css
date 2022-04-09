@@ -1,6 +1,6 @@
 .container {
   padding: 30px;
-  width: 800px;
+  width: 700px;
   margin: 0 auto;
 }
 
@@ -15,58 +15,6 @@
 
 .container > div {
   margin: 2em 0;
-}
-
-.container input {
-  width: 100%;
-  font-size: 1em;
-  padding: 0.2em 0.4em;
-  margin: 0.2em 0;
-}
-
-.container label + div {
-  font-size: 0.8em;
-  color: #777;
-}
-
-.container label + div a {
-  border-bottom: 1px dashed #555;
-  color: #777;
-}
-
-.preview {
-  display: flex;
-  align-items: stretch;
-}
-
-.preview > div {
-  margin: 10px;
-}
-
-.preview img {
-  display: block;
-}
-
-.preview div:last-child {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.preview button {
-  font-size: 2em;
-  padding: 0.1em 1em;
-  align-self: flex-end;
-}
-
-.preview a {
-  text-decoration: underline;
-}
-
-.price {
-  font-size: 1.5em;
-  margin: 0.5em 0;
 }
 
 .error {

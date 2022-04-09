@@ -1,0 +1,16 @@
+.container input {
+  width: 100%;
+  font-size: 1em;
+  padding: 0.2em 0.4em;
+  margin: 0.4em 0;
+}
+
+.container label + div {
+  font-size: 0.8em;
+  color: #777;
+}
+
+.container label + div a {
+  border-bottom: 1px dashed #555;
+  color: #777;
+}

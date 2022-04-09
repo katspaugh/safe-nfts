@@ -1,26 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
-import Web3 from 'web3'
-import { provider as Provider } from 'web3-core'
+import { useCallback, useState } from 'react'
 import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider/dist/provider'
-
-import { buyOrder, getItem, getOrder, initSeaport } from '../../utils/opensea'
+import { buyOrder, getItem, getOrder } from '../../utils/opensea'
+import useSeaport from '../../utils/useSeaport'
 import useAsync from '../../utils/useAsync'
+import Preview from '../Preview'
+import UrlInput from '../UrlInput'
 import css from './styles.module.css'
 
-const rinkebyChainId = 4
-const exampleCollection = '0x71e24f80f2f7cbcd07009ad91ccc469d53bb10e0'
-const exampleId = '4'
-
 const App = () => {
-  const { sdk, safe } = useSafeAppsSDK()
+  useSeaport() // init OpenSea SDK
 
   const [tokenAddress, setTokenAddress] = useState<string>()
   const [tokenId, setTokenId] = useState<string>()
   const [buyError, setBuyError] = useState<Error>()
-  const [defaultLink, setDefaultLink] = useState<string>('')
 
+  // Get NFT and price info from OpenSea
   const getAsset = useCallback(() => {
     if (!(tokenAddress && tokenId)) return Promise.resolve()
 
@@ -30,98 +24,48 @@ const App = () => {
     ])
   }, [tokenAddress, tokenId])
 
-  const { result, error, loading } = useAsync<[ OpenSeaAsset, Order | void ] | void>(getAsset)
-  const [ tokenInfo, orderInfo ] = result || []
-  const anyError = buyError || error
+  const { result: assetResult, error: assetError, loading } = useAsync<[ OpenSeaAsset, Order | undefined ] | void>(getAsset)
+  const [ tokenInfo, orderInfo ] = assetResult || []
+  const anyError = buyError || assetError
 
-  const onBuy = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-
+  // Buy the NFT
+  const onBuy = useCallback(() => {
     if (!orderInfo) return
 
     setBuyError(undefined)
 
-    buyOrder(orderInfo, safe.safeAddress)
+    buyOrder(orderInfo)
       .then((hash) => {
         console.log('Transaction hash', hash)
       })
       .catch((err) => {
         setBuyError(err)
       })
-  }
+  }, [setBuyError, orderInfo])
 
+  // A new OpenSea URL is pasted
   const onAddressChange = (address: string, id: string) => {
     setTokenAddress(address)
     setTokenId(id)
     setBuyError(undefined)
   }
 
-  const onLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    const [ , collection, id ] = val.match(/:\/\/(?:testnets.)?opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i) || []
-    onAddressChange(collection || '', id || '')
-  }
-
-  const onExampleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    setDefaultLink(e.currentTarget.href)
-    onAddressChange(exampleCollection, exampleId)
-  }
-
-  useEffect(() => {
-    const prov: any = new SafeAppProvider(safe, sdk as any)
-    const web3: Web3 = new Web3(prov)
-    const isTestNet = safe.chainId == rinkebyChainId
-    initSeaport(web3.currentProvider as Provider, isTestNet)
-  }, [sdk, safe])
-
   return (
     <div className={css.container}>
       <h1>Safe NFTs</h1>
       <h2>Buy NFTs from the comfort of your Safe</h2>
 
-      <div>
-        <label>
-          NFT link on OpenSea<br />
-          <input onChange={onLinkChange} defaultValue={defaultLink} key={defaultLink} />
-        </label>
-
-        <div>
-          E.g.{' '}
-          <a href={`https://opensea.io/assets/${exampleCollection}/${exampleId}`} onClick={onExampleClick}>
-            {`https://opensea.io/assets/${exampleCollection}/${exampleId}`}
-          </a>
-        </div>
-      </div>
+      <UrlInput onChange={onAddressChange} />
 
       {loading && 'Loading NFT...'}
 
-      {anyError && (
-        <div className={css.error}>
-          Error loading NFT: {anyError.message}
-        </div>
+      {tokenInfo && (
+        <Preview asset={tokenInfo} order={orderInfo} onBuy={onBuy} />
       )}
 
-      {tokenInfo && (
-        <div className={css.preview}>
-          <div>
-            <img src={tokenInfo.imageUrlThumbnail} />
-          </div>
-
-          <div>
-            {tokenInfo.collection.name}<br />
-            {tokenInfo.name}<br />
-            <div className={css.price}>
-              {orderInfo ? Web3.utils.fromWei(orderInfo.currentPrice.toString(), 'ether') + ' ETH' : 'Not for sale'}
-            </div>
-            <a href={tokenInfo.openseaLink}>View on OpenSea</a>
-          </div>
-
-          <div>
-            {orderInfo && orderInfo.currentPrice && (
-              <button onClick={onBuy}>Buy</button>
-            )}
-          </div>
+      {anyError && (
+        <div className={css.error}>
+          {anyError.message}
         </div>
       )}
     </div>
