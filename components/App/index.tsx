@@ -1,10 +1,10 @@
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider'
-import { provider as Provider } from 'web3-core'
-
-import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
 import { useCallback, useEffect, useState } from 'react'
 import Web3 from 'web3'
+import { provider as Provider } from 'web3-core'
+import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
+import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider/dist/provider'
+
 import { buyOrder, getItem, getOrder, initSeaport } from '../../utils/opensea'
 import useAsync from '../../utils/useAsync'
 import css from './styles.module.css'

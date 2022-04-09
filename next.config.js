@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
 
   webpack: (config, {}) => {
+    config.optimization.minimize = false
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,

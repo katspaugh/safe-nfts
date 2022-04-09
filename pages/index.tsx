@@ -13,8 +13,8 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Safe Copycat</title>
-        <meta name="description" content="Deploy a Safe to the same address on another chain" />
+        <title>Safe NFTs</title>
+        <meta name="description" content="Buy NFTs from the comfort of your Safe" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

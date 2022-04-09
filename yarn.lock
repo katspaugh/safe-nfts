@@ -531,9 +531,9 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.0"
 
-"@gnosis.pm/safe-apps-provider@https://gitpkg.now.sh/gnosis/safe-apps-sdk/packages/safe-apps-provider?opensea":
-  version "0.10.5"
-  resolved "https://gitpkg.now.sh/gnosis/safe-apps-sdk/packages/safe-apps-provider?opensea#43494dbbfe5b0571aa579b91632e829b4f50ed7d"
+"@gnosis.pm/safe-apps-provider@https://gitpkg.now.sh/gnosis/safe-apps-sdk/packages/safe-apps-provider?request-signature?10":
+  version "0.10.10"
+  resolved "https://gitpkg.now.sh/gnosis/safe-apps-sdk/packages/safe-apps-provider?request-signature?10#5493c43986d8d2072449acb44904d6ffdd85118a"
   dependencies:
     "@gnosis.pm/safe-apps-sdk" "7.2.0"
     events "^3.3.0"
