@@ -1,17 +1,12 @@
 import { ReactElement } from 'react'
-import Web3 from 'web3'
 import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
+import { formatPrice } from '../../utils/opensea'
 import css from './styles.module.css'
 
 interface PreviewProps {
   asset: OpenSeaAsset
   order?: Order
   onBuy: () => unknown
-}
-
-// Format a price from a BigNumber in wei to ETH
-const formatPrice = (price: Order['currentPrice']): string => {
-  return Web3.utils.fromWei(price.toString(), 'ether') + ' ETH'
 }
 
 const Preview = ({ asset, order, onBuy }: PreviewProps): ReactElement => {
@@ -32,12 +27,14 @@ const Preview = ({ asset, order, onBuy }: PreviewProps): ReactElement => {
           <a href={asset.openseaLink} target="_blank">{asset.name}</a>
         </div>
 
-        <div className={css.description}>
-          <span>Owned by</span> {asset.owner.user.username}
-        </div>
+        {asset.owner && (
+          <div className={css.description}>
+            <span>Owned by</span> {asset.owner.user.username}
+          </div>
+        )}
 
         <div className={css.price}>
-          {order ? formatPrice(order.currentPrice) : 'Not for sale'}
+          {order ? formatPrice(order.currentPrice.toString(), order.paymentTokenContract) : 'Not for sale'}
         </div>
 
         {order && order.currentPrice && (

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { ReactElement, useCallback, useState } from 'react'
 import { OpenSeaAsset, Order } from 'opensea-js/lib/types'
 import { buyOrder, getItem, getOrder } from '../../utils/opensea'
 import useSeaport from '../../utils/useSeaport'
@@ -6,9 +6,10 @@ import useAsync from '../../utils/useAsync'
 import Preview from '../Preview'
 import UrlInput from '../UrlInput'
 import css from './styles.module.css'
+import OwnedAssets from '../OwnedAssets'
 
-const App = () => {
-  useSeaport() // init OpenSea SDK
+const App = (): ReactElement => {
+  const isReady = useSeaport() // init OpenSea SDK
 
   const [tokenAddress, setTokenAddress] = useState<string>()
   const [tokenId, setTokenId] = useState<string>()
@@ -68,6 +69,8 @@ const App = () => {
           {anyError.message}
         </div>
       )}
+
+      {isReady && <OwnedAssets />}
     </div>
   )
 }

@@ -1,0 +1,50 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.asset {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  width: 170px;
+}
+
+.asset img {
+  width: 128px;
+  height: 128px;
+  margin: 20px;
+}
+
+.asset a {
+  text-decoration: underline;
+}
+
+.asset > div {
+  padding: 10px;
+  padding-right: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top: 1px solid #ddd;
+  font-size: 0.8em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.2em;
+}
+
+.asset span {
+  color: #555;
+  background: #ddd;
+  margin: 10px -10px -10px;
+  padding: 10px;
+}
+
+.asset b {
+  color: #333;
+}

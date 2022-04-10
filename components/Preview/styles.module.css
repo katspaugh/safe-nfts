@@ -2,10 +2,11 @@
   display: flex;
   align-items: stretch;
   border: 1px solid #ddd;
+  border-radius: 2px;
 }
 
 .preview > div {
-  border: 1px solid #ddd;
+  border-left: 1px solid #ddd;
 }
 
 .preview > div:last-child {

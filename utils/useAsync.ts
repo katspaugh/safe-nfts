@@ -7,27 +7,27 @@ type AsyncResult<T> = {
 }
 
 const useAsync = <T>(asyncCall: () => Promise<T>): AsyncResult<T> => {
-  const [asyncVal, setAsyncVal] = useState<T>()
-  const [err, setErr] = useState<Error>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [result, setResult] = useState<T>()
+  const [error, setError] = useState<Error>()
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     let isCurrent = true
 
-    setAsyncVal(undefined)
-    setErr(undefined)
+    setResult(undefined)
+    setError(undefined)
     setLoading(true)
 
     asyncCall()
       .then((val: T) => {
         if (isCurrent) {
-          setAsyncVal(val)
+          setResult(val)
           setLoading(false)
         }
       })
-      .catch((error) => {
+      .catch((err) => {
         if (isCurrent) {
-          setErr(error)
+          setError(err)
           setLoading(false)
         }
       })
@@ -37,7 +37,7 @@ const useAsync = <T>(asyncCall: () => Promise<T>): AsyncResult<T> => {
     }
   }, [asyncCall])
 
-  return { error: err, result: asyncVal, loading }
+  return { error, result, loading }
 }
 
 export default useAsync
