@@ -17,7 +17,7 @@ export const initSeaport = (web3Provider: Provider) => {
 
   seaport = new OpenSeaPort(provider, {
     networkName: isTestNet ? Network.Rinkeby : Network.Main,
-    apiKey: isTestNet ? undefined : process.env.OPENSEA_KEY
+    apiKey: isTestNet ? undefined : process.env.OPENSEA_KEY || '54f28eb29db648719c2eaaabccc414fc'
   })
 
   console.log('OpenSeaPort initialized', seaport)
@@ -63,5 +63,5 @@ export const getOwnedAssets = async (accountAddress = provider.safe.safeAddress)
 }
 
 export const formatPrice = (price: string, paymentToken: Order['paymentTokenContract']): string => {
-  return (Number(price) / Math.pow(10, paymentToken.decimals)) + ' ' + paymentToken.symbol;
+  return (Number(price) / Math.pow(10, paymentToken.decimals)) + ' ' + paymentToken.symbol
 }

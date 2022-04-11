@@ -5,8 +5,9 @@ import useSeaport from '../../utils/useSeaport'
 import useAsync from '../../utils/useAsync'
 import Preview from '../Preview'
 import UrlInput from '../UrlInput'
-import css from './styles.module.css'
 import OwnedAssets from '../OwnedAssets'
+import Message from '../Message'
+import css from './styles.module.css'
 
 const App = (): ReactElement => {
   const isReady = useSeaport() // init OpenSea SDK
@@ -58,17 +59,13 @@ const App = (): ReactElement => {
 
       <UrlInput onChange={onAddressChange} />
 
-      {loading && 'Loading NFT...'}
-
       {tokenInfo && (
         <Preview asset={tokenInfo} order={orderInfo} onBuy={onBuy} />
       )}
 
-      {anyError && (
-        <div className={css.error}>
-          {anyError.message}
-        </div>
-      )}
+      {anyError && <Message message={anyError} />}
+
+      {loading && <Message message="Loading NFT..." />}
 
       {isReady && <OwnedAssets />}
     </div>

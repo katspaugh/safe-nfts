@@ -16,14 +16,3 @@
 .container > div {
   margin: 2em 0;
 }
-
-.error {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  text-align: center;
-  background-color: #ffdddd;
-  border: 1px solid #ff0000;
-  padding: 1.5em;
-  border-radius: 10px;
-}

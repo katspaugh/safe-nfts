@@ -2,8 +2,8 @@ import { ReactElement, useState } from 'react'
 import css from './styles.module.css'
 
 const openSeaUrlRegex = /:\/\/(?:testnets.)?opensea\.io\/assets\/(0x[a-z0-9]{40})\/([0-9]+)/i
-const exampleCollection = '0x71e24f80f2f7cbcd07009ad91ccc469d53bb10e0'
-const exampleId = '14'
+const exampleCollection = '0xbe6a2f5960b27c7fde12e073d61b962d9c6c3cb7'
+const exampleId = '718'
 
 interface UrlInputProps {
   onChange: (tokenAddress: string, tokenId: string) => unknown

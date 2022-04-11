@@ -1,0 +1,14 @@
+.message {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  text-align: center;
+  padding: 1.5em;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.error {
+  background-color: #ffdddd;
+  border-color: #ff0000;
+}
