@@ -17,7 +17,7 @@ export const initSeaport = (web3Provider: Provider) => {
 
   seaport = new OpenSeaPort(provider, {
     networkName: isTestNet ? Network.Rinkeby : Network.Main,
-    apiKey: isTestNet ? undefined : process.env.OPENSEA_KEY || '54f28eb29db648719c2eaaabccc414fc'
+    apiKey: isTestNet ? undefined : process.env.NEXT_PUBLIC_OPENSEA_KEY || '54f28eb29db648719c2eaaabccc414fc'
   })
 
   console.log('OpenSeaPort initialized', seaport)
